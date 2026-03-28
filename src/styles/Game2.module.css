@@ -1,0 +1,744 @@
+/* ============================
+   Game 2 — ¿Puedes ganarle al Casino?
+   Dark Casino Minimalist
+   ============================ */
+
+.page {
+  min-height: 100vh;
+  background: #0d0d0d;
+  padding: 1.5rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.backBtn {
+  color: #888;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.backBtn:hover { color: #c9a84c; }
+
+.mythBadge {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #c9a84c;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+/* Container */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+/* Title */
+.titleBlock {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #f0f0f0;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.mythCard {
+  display: inline-block;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-left: 3px solid #c9a84c;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  max-width: 500px;
+}
+
+.mythLabel {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #c9a84c;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.mythText {
+  color: #ccc;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.mythText em {
+  color: #e05252;
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+/* ============================
+   LEFT PANEL
+   ============================ */
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* Chip counter */
+.chipCounter {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 0.9rem 1.5rem;
+  width: 100%;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.chipUp { border-color: #4caf7d44; }
+.chipDebt { border-color: #e0525244; background: #1a0808; }
+
+.chipIcon { font-size: 1.5rem; }
+
+.chipAmt {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #f0f0f0;
+  font-variant-numeric: tabular-nums;
+  min-width: 80px;
+  text-align: center;
+}
+
+.chipUp .chipAmt { color: #4caf7d; }
+.chipDebt .chipAmt { color: #e05252; }
+
+.chipLbl {
+  font-size: 0.8rem;
+  color: #555;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.debtBadge {
+  background: #e05252;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ============================
+   ROULETTE WHEEL
+   ============================ */
+.wheelContainer {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  flex-shrink: 0;
+}
+
+.wheel {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  border: 4px solid #c9a84c;
+  box-shadow: 0 0 40px #c9a84c22, 0 0 80px #00000088;
+  background: #0a0a0a;
+}
+
+/* Each segment is a thin pie slice via clip-path */
+.wheelSegment {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+  clip-path: polygon(
+    50% 50%,
+    50% 0%,
+    calc(50% + 50% * tan(calc(360deg / var(--seg-count) / 2))) 0%
+  );
+}
+
+/* Simpler approach: colored borders */
+.wheelSegment {
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+  border-left: 130px solid transparent;
+  border-right: 130px solid transparent;
+  transform-origin: left center;
+  margin-top: -130px;
+}
+
+.seg_red   { border-bottom: none; border-top: 130px solid #c0392b44; }
+.seg_black { border-bottom: none; border-top: 130px solid #1a1a1a66; }
+.seg_green { border-bottom: none; border-top: 130px solid #27ae6088; }
+
+.segNum {
+  display: none; /* numbers are decorative only */
+}
+
+/* Better wheel: use conic-gradient */
+.wheel {
+  background: conic-gradient(
+    #c0392b 0deg, #c0392b 9.7deg,
+    #1a1a1a 9.7deg, #1a1a1a 19.4deg,
+    #c0392b 19.4deg, #c0392b 29.1deg,
+    #1a1a1a 29.1deg, #1a1a1a 38.8deg,
+    #c0392b 38.8deg, #c0392b 48.5deg,
+    #1a1a1a 48.5deg, #1a1a1a 58.2deg,
+    #c0392b 58.2deg, #c0392b 67.9deg,
+    #1a1a1a 67.9deg, #1a1a1a 77.6deg,
+    #c0392b 77.6deg, #c0392b 87.3deg,
+    #1a1a1a 87.3deg, #1a1a1a 97.0deg,
+    #c0392b 97.0deg, #c0392b 106.7deg,
+    #1a1a1a 106.7deg, #1a1a1a 116.4deg,
+    #c0392b 116.4deg, #c0392b 126.1deg,
+    #1a1a1a 126.1deg, #1a1a1a 135.8deg,
+    #c0392b 135.8deg, #c0392b 145.5deg,
+    #1a1a1a 145.5deg, #1a1a1a 155.2deg,
+    #c0392b 155.2deg, #c0392b 164.9deg,
+    #1a1a1a 164.9deg, #1a1a1a 174.6deg,
+    #1e8449 174.6deg, #1e8449 184.3deg,
+    #c0392b 184.3deg, #c0392b 194.0deg,
+    #1a1a1a 194.0deg, #1a1a1a 203.7deg,
+    #c0392b 203.7deg, #c0392b 213.4deg,
+    #1a1a1a 213.4deg, #1a1a1a 223.1deg,
+    #c0392b 223.1deg, #c0392b 232.8deg,
+    #1a1a1a 232.8deg, #1a1a1a 242.5deg,
+    #c0392b 242.5deg, #c0392b 252.2deg,
+    #1a1a1a 252.2deg, #1a1a1a 261.9deg,
+    #c0392b 261.9deg, #c0392b 271.6deg,
+    #1a1a1a 271.6deg, #1a1a1a 281.3deg,
+    #c0392b 281.3deg, #c0392b 291.0deg,
+    #1a1a1a 291.0deg, #1a1a1a 300.7deg,
+    #c0392b 300.7deg, #c0392b 310.4deg,
+    #1a1a1a 310.4deg, #1a1a1a 320.1deg,
+    #c0392b 320.1deg, #c0392b 329.8deg,
+    #1a1a1a 329.8deg, #1a1a1a 339.5deg,
+    #c0392b 339.5deg, #c0392b 349.2deg,
+    #1a1a1a 349.2deg, #1a1a1a 360deg
+  );
+}
+
+/* We won't render individual segments, remove the segment divs styling */
+.wheelSegment { display: none; }
+
+/* Ball orbit */
+.ballOrbit {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 220px; height: 220px;
+  margin: -110px 0 0 -110px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ball {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 12px; height: 12px;
+  background: #f0f0f0;
+  border-radius: 50%;
+  margin-left: -6px;
+  margin-top: -6px;
+  box-shadow: 0 0 8px #ffffff88;
+}
+
+/* Hub */
+.hub {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 72px; height: 72px;
+  margin: -36px 0 0 -36px;
+  background: #0d0d0d;
+  border: 3px solid #c9a84c;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  z-index: 10;
+}
+
+.hubNum {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f0f0f0;
+  line-height: 1;
+}
+
+.hubColor {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.hub_red   { color: #c0392b; }
+.hub_black { color: #888; }
+.hub_green { color: #27ae60; }
+
+.hubIdle { font-size: 1.5rem; color: #333; }
+
+.hubSpin {
+  font-size: 1.5rem;
+  color: #c9a84c;
+  animation: spinIcon 0.8s linear infinite;
+}
+
+@keyframes spinIcon {
+  to { transform: rotate(360deg); }
+}
+
+/* Result banner */
+.resultBanner {
+  width: 100%;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  animation: popIn 0.3s ease;
+}
+
+.bannerWin { background: #0f1a0f; border: 1px solid #4caf7d44; color: #4caf7d; }
+.bannerLoss { background: #1a0808; border: 1px solid #e0525244; color: #e05252; }
+
+@keyframes popIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Bet section */
+.betSection, .colorSection {
+  width: 100%;
+}
+
+.betLabel {
+  font-size: 0.72rem;
+  color: #555;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.betGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.betChip {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  border: 2px solid #2a2a2a;
+  color: #aaa;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.betChip:hover:not(:disabled) { border-color: #c9a84c55; color: #f0f0f0; }
+.betChipActive { background: #221e00 !important; border-color: #c9a84c !important; color: #c9a84c !important; }
+.betChip:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Color buttons */
+.colorBtns {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.colorBtn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.colorBtn span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.colorBtn small {
+  font-size: 0.65rem;
+  opacity: 0.6;
+}
+
+.colorBtn_red   { background: #1a0808; color: #e05252; }
+.colorBtn_black { background: #111; color: #aaa; }
+.colorBtn_green { background: #081a08; color: #4caf7d; }
+
+.colorBtn_red:hover:not(:disabled)   { border-color: #e0525244; }
+.colorBtn_black:hover:not(:disabled) { border-color: #55555544; }
+.colorBtn_green:hover:not(:disabled) { border-color: #4caf7d44; }
+
+.colorBtn_red.colorBtnActive   { border-color: #e05252; }
+.colorBtn_black.colorBtnActive { border-color: #888; }
+.colorBtn_green.colorBtnActive { border-color: #4caf7d; }
+
+.colorBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Action row */
+.actionRow {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.spinBtn {
+  flex: 1;
+  background: #c9a84c;
+  color: #0d0d0d;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+}
+
+.spinBtn:hover:not(:disabled) { background: #dfc06a; }
+.spinBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.retireBtn {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #888;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.retireBtn:hover:not(:disabled) { border-color: #e0525244; color: #e05252; }
+.retireBtn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Retired box */
+.retiredBox {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.retiredBox h3 {
+  font-size: 1.2rem;
+  color: #c9a84c;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.06em;
+}
+
+.retiredStats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.rStat {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #222;
+}
+
+.rStatLbl { color: #666; }
+.rStatVal { font-weight: 700; color: #f0f0f0; }
+.green { color: #4caf7d !important; }
+.red   { color: #e05252 !important; }
+
+.btnReset {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  color: #555;
+  padding: 0.55rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.btnReset:hover { border-color: #444; color: #888; }
+
+/* ============================
+   RIGHT PANEL
+   ============================ */
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Stats grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+}
+
+.statCard {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 0.85rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.statGreen { border-color: #4caf7d33; }
+.statRed   { border-color: #e0525233; }
+
+.statNum {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #f0f0f0;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.statGreen .statNum { color: #4caf7d; }
+.statRed .statNum   { color: #e05252; }
+
+.statLbl {
+  font-size: 0.65rem;
+  color: #444;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Chart */
+.chartBlock {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.chartTitle {
+  font-size: 0.72rem;
+  color: #555;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.chartSvg {
+  width: 100%;
+  height: 100px;
+  overflow: visible;
+}
+
+/* History */
+.historyBlock {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.historyTitle {
+  font-size: 0.72rem;
+  color: #555;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.historyList::-webkit-scrollbar { width: 4px; }
+.historyList::-webkit-scrollbar-track { background: #111; }
+.historyList::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+
+.histRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  animation: slideIn 0.25s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-8px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.histWin  { background: #0f1a0f; }
+.histLoss { background: #1a0808; }
+
+.histNum {
+  width: 24px;
+  font-weight: 800;
+  color: #f0f0f0;
+  text-align: center;
+}
+
+.histColor {
+  width: 50px;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.hc_red   { color: #e05252; }
+.hc_black { color: #888; }
+.hc_green { color: #4caf7d; }
+
+.histBet { color: #666; flex: 1; }
+
+.histDelta { font-weight: 700; width: 40px; text-align: right; }
+.dGreen { color: #4caf7d; }
+.dRed   { color: #e05252; }
+
+.histBalance { color: #555; width: 70px; text-align: right; font-size: 0.75rem; }
+
+/* Edge card */
+.edgeCard {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.edgeTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #c9a84c;
+  margin-bottom: 0.6rem;
+}
+
+.edgeText {
+  font-size: 0.85rem;
+  color: #888;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.edgeText strong { color: #f0f0f0; }
+.edgeText em { color: #e05252; font-style: normal; font-weight: 700; }
+
+.oddsRow {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  color: #555;
+}
+
+.oddsRow strong { color: #aaa; }
+
+/* ============================
+   CONCLUSION
+   ============================ */
+.conclusion {
+  margin-top: 2.5rem;
+  background: linear-gradient(135deg, #0f1a0f, #1a1a1a);
+  border: 1px solid #4caf7d44;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.conclusionIcon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+.conclusion h3 {
+  font-size: 1.4rem;
+  color: #4caf7d;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.conclusion p {
+  color: #aaa;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 620px;
+  margin: 0 auto 0.75rem;
+}
+
+.conclusion strong { color: #f0f0f0; }
+.conclusion em { color: #c9a84c; font-style: normal; font-weight: 700; }
+
+.conceptTag {
+  font-size: 0.8rem !important;
+  color: #555 !important;
+  letter-spacing: 0.06em;
+}
+
+.conceptTag strong { color: #888 !important; }
