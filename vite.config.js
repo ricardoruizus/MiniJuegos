@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Minijuegos/',  // ← nombre exacto de tu repo en GitHub
+  base: '/MiniJuegos/',  // ← nombre exacto de tu repo en GitHub
 })
