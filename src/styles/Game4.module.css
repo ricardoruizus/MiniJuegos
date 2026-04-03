@@ -1,0 +1,202 @@
+.page { 
+  min-height: 100vh; 
+  background: #0f172a; 
+  color: #f8fafc; 
+  padding: 2rem; 
+  font-family: 'Inter', sans-serif;
+}
+
+.header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  max-width: 1200px; 
+  margin: 0 auto 2rem; 
+}
+
+.backBtn { 
+  color: #94a3b8; 
+  text-decoration: none; 
+  font-weight: bold; 
+}
+
+.badge { 
+  background: #1e293b; 
+  padding: 0.5rem 1rem; 
+  border-radius: 20px; 
+  border: 1px solid #334155; 
+  font-size: 0.9rem;
+}
+
+.container { max-width: 1200px; margin: 0 auto; }
+
+.hero { text-align: center; margin-bottom: 3rem; }
+
+.title { font-size: 3rem; margin-bottom: 0.5rem; color: #f8fafc; }
+
+.mythBox { 
+  background: #1e293b; 
+  padding: 1rem 2rem; 
+  border-radius: 12px; 
+  display: inline-block;
+  border-left: 4px solid #ef4444;
+}
+
+.mainLayout { 
+  display: grid; 
+  grid-template-columns: 350px 1fr; 
+  gap: 3rem; 
+}
+
+.controls { 
+  background: #1e293b; 
+  padding: 2rem; 
+  border-radius: 20px; 
+  border: 1px solid #334155;
+}
+
+.statCard { 
+  background: #0f172a; 
+  padding: 1.5rem; 
+  border-radius: 12px; 
+  text-align: center; 
+  margin-bottom: 2rem;
+  border: 1px solid #334155;
+}
+
+.statLabel { display: block; color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+.statVal { font-size: 2.5rem; font-weight: 800; color: #fbbf24; }
+
+.settingGroup { margin-bottom: 2rem; }
+
+.settingGroup label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #e2e8f0; }
+
+.settingGroup input[type="range"] { width: 100%; accent-color: #3b82f6; }
+
+.helpText { font-size: 0.8rem; color: #64748b; margin-top: 0.4rem; }
+
+.actions { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+
+.playBtn { 
+  padding: 1rem; 
+  background: #3b82f6; 
+  color: white; 
+  border: none; 
+  border-radius: 12px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  transition: 0.2s;
+}
+
+.playBtn:hover:not(:disabled) { background: #2563eb; transform: translateY(-2px); }
+
+.playBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.resetBtn { 
+  padding: 0.8rem; 
+  background: transparent; 
+  color: #94a3b8; 
+  border: 1px solid #334155; 
+  border-radius: 12px; 
+  cursor: pointer;
+}
+
+.miniStats { border-top: 1px solid #334155; padding-top: 1.5rem; font-size: 0.9rem; color: #94a3b8; }
+
+.textGreen { color: #22c55e; font-weight: bold; }
+
+.textRed { color: #ef4444; font-weight: bold; }
+
+.board { 
+  background: #1e293b; 
+  padding: 2rem; 
+  border-radius: 20px; 
+  border: 1px solid #334155; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
+}
+
+.grid { 
+  display: grid; 
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 1rem; 
+  margin-bottom: 2rem;
+}
+
+.cell { 
+  width: 80px; 
+  height: 80px; 
+  background: #0f172a; 
+  border-radius: 16px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 2rem; 
+  cursor: pointer; 
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.healthy { background: #0f172a; }
+
+.infected { 
+  background: #450a0a; 
+  border-color: #ef4444; 
+  animation: infectAnim 0.5s ease-out; 
+}
+
+.possible { 
+  border: 2px dashed #3b82f6; 
+}
+
+.selected { 
+  background: #1e3a8a; 
+  border-color: #3b82f6; 
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.legend { display: flex; gap: 2rem; font-size: 0.85rem; color: #94a3b8; }
+
+.legend p { display: flex; align-items: center; gap: 0.5rem; }
+
+.dotHealthy { width: 12px; height: 12px; background: #0f172a; border-radius: 50%; }
+
+.dotInfected { width: 12px; height: 12px; background: #ef4444; border-radius: 50%; }
+
+.dotPossible { width: 12px; height: 12px; border: 2px dashed #3b82f6; border-radius: 50%; }
+
+.conclusion { 
+  margin-top: 3rem; 
+  background: #0f172a; 
+  border: 1px solid #3b82f6; 
+  padding: 3rem; 
+  border-radius: 24px; 
+  text-align: center;
+}
+
+.conclusion h3 { font-size: 2rem; margin-bottom: 1.5rem; color: #3b82f6; }
+
+.mathNote { color: #94a3b8; margin: 2rem 0; font-style: italic; }
+
+.resetBtnLarge { 
+  padding: 1rem 3rem; 
+  background: #3b82f6; 
+  color: white; 
+  border: none; 
+  border-radius: 12px; 
+  font-weight: bold; 
+  cursor: pointer; 
+}
+
+@keyframes infectAnim {
+  0% { transform: scale(0.8); background: #ef4444; }
+  100% { transform: scale(1); background: #450a0a; }
+}
+
+@media (max-width: 1000px) {
+  .mainLayout { grid-template-columns: 1fr; }
+  .cell { width: 60px; height: 60px; font-size: 1.5rem; }
+}

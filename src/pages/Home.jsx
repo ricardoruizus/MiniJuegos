@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.css'
 const games = [
   { id: 1, title: "La Falacia del Jugador", myth: "Si algo pasó muchas veces, ahora es menos probable", icon: "🪙" },
   { id: 2, title: "¿Puedes ganarle al Casino?", myth: "Si juegas suficiente tiempo, terminarás ganando", icon: "🎡" },
-  { id: 3, title: "La Carta que Nunca Sale", myth: "Si no ha salido, ahora es más probable", icon: "🃏" },
+  { id: 3, title: "El Problema de Monty Hall", myth: "Cambiar de puerta no mejora mis probabilidades", icon: "🚪" },
   { id: 4, title: "Contagio en el Salón", myth: "Un contagio ocurre al azar sin importar el contacto", icon: "🦠" },
   { id: 5, title: "¿La Suerte Mejora?", myth: "Si intento muchas veces, seguro lo logro", icon: "🎯" },
   { id: 6, title: "Loot Box Simulator", myth: "Comprando muchas cajas, obtendrás el legendario", icon: "📦" },
