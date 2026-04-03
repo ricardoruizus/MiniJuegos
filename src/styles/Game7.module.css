@@ -1,0 +1,239 @@
+.container {
+  min-height: 100vh;
+  background: radial-gradient(circle at center, #1a1a1a 0%, #0d0d0d 100%);
+  color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.header {
+  color: #c9a84c;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-shadow: 0 0 15px rgba(201, 168, 76, 0.3);
+  text-align: center;
+}
+
+.gameCard {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: slideUp 0.6s ease-out;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+  align-items: center;
+}
+
+.numberInput {
+  background: #222;
+  border: 2px solid #333;
+  color: white;
+  padding: 12px;
+  font-size: 1.5rem;
+  width: 80px;
+  text-align: center;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.numberInput:focus {
+  outline: none;
+  border-color: #c9a84c;
+  box-shadow: 0 0 10px rgba(201, 168, 76, 0.2);
+}
+
+.playButton {
+  background: #c9a84c;
+  color: #0d0d0d;
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.playButton:hover:not(:disabled) {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 5px 15px rgba(201, 168, 76, 0.4);
+}
+
+.playButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.playButton:disabled {
+  background: #555;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.resultContainer {
+  margin: 30px 0;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bigNumber {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #c9a84c;
+  animation: numberPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.rollingNumber {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #555;
+  animation: roll 0.1s infinite linear;
+  filter: blur(2px);
+}
+
+.message {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.messageSuccess {
+  color: #4ade80;
+  animation: bounce 0.5s ease;
+}
+
+.messageError {
+  color: #f87171;
+  animation: shake 0.4s ease-in-out;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.statItem {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statLabel {
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.statValue {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.historial {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 500px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.historialTitle {
+  color: #888;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.historialList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.historyBadge {
+  background: #222;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.infoSection {
+  margin-top: 50px;
+  max-width: 600px;
+  background: rgba(201, 168, 76, 0.05);
+  border-left: 4px solid #c9a84c;
+  padding: 25px;
+  border-radius: 0 15px 15px 0;
+}
+
+.infoSection h3 {
+  color: #c9a84c;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.backLink {
+  margin-top: 40px;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.backLink:hover {
+  color: #c9a84c;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes numberPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes roll {
+  0% { transform: translateY(-10px); }
+  100% { transform: translateY(10px); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
