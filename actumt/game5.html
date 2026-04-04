@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 5 - La suerte y muchos intentos</title>
+  <link rel="stylesheet" href="game5.module.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="header">
+      <div>
+        <p class="subtitle">Juego 5</p>
+        <h1>¿La suerte mejora con más intentos?</h1>
+      </div>
+      <a class="back-link" href="index.html">← Volver al menú</a>
+    </header>
+
+    <section class="panel info-panel">
+      <h2>Mito</h2>
+      <p>“Si intento muchas veces, seguro lo logro.”</p>
+      <h2>Cómo funciona</h2>
+      <ul>
+        <li>Premio raro con 5% de probabilidad en cada intento.</li>
+        <li>El juego da 1000 fichas y cada intento cuesta 10 fichas.</li>
+        <li>Máximo 100 intentos.</li>
+      </ul>
+      <p class="explain">Cada tiro es independiente: el resultado anterior no cambia la probabilidad del siguiente.</p>
+    </section>
+
+    <section class="panel game-panel">
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="label">Fichas</span>
+          <strong id="fichas">1000</strong>
+        </div>
+        <div class="stat-card">
+          <span class="label">Intentos</span>
+          <strong id="intentos">0</strong>
+        </div>
+        <div class="stat-card">
+          <span class="label">Probabilidad por intento</span>
+          <strong>5%</strong>
+        </div>
+      </div>
+
+      <div class="progress-shell">
+        <div class="progress-caption">Progreso de intentos (máximo 100)</div>
+        <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+      </div>
+
+      <div class="actions">
+        <button id="tryBtn">Intentar tirar</button>
+        <button id="resetBtn" class="secondary">Reiniciar juego</button>
+      </div>
+
+      <div id="message" class="message">Pulsa "Intentar tirar" para ver si consigues el premio.</div>
+    </section>
+
+    <section class="panel tip-panel">
+      <h2>Demostración</h2>
+      <p>Incluso con muchos intentos, no hay garantía. Cada tiro sigue siendo independiente y mantiene 5% de éxito.</p>
+      <p class="note">Al agotar las fichas, el juego muestra que el premio no se asegura al repetir. La frecuencia esperada, no la certeza, es lo que cambia.</p>
+    </section>
+  </div>
+
+  <div id="reward" class="reward hidden">
+    <div class="trophy">🏆</div>
+    <p>¡Ganaste el premio raro!</p>
+  </div>
+
+  <script>
+    const fichasEl = document.getElementById('fichas');
+    const intentosEl = document.getElementById('intentos');
+    const progressEl = document.getElementById('progress');
+    const messageEl = document.getElementById('message');
+    const tryBtn = document.getElementById('tryBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const rewardEl = document.getElementById('reward');
+
+    const initialFichas = 1000;
+    const costo = 10;
+    const probabilidad = 0.05;
+    let fichas = initialFichas;
+    let intentos = 0;
+    let ganado = false;
+
+    function actualizarPantalla() {
+      fichasEl.textContent = fichas;
+      intentosEl.textContent = intentos;
+      progressEl.style.width = `${Math.min(100, Math.round((intentos / 100) * 100))}%`;
+    }
+
+    function actualizarMensaje(text, type = 'normal') {
+      messageEl.textContent = text;
+      messageEl.className = `message ${type}`;
+    }
+
+    function mostrarPremio() {
+      rewardEl.classList.remove('hidden');
+      rewardEl.classList.add('show');
+      setTimeout(() => rewardEl.classList.remove('show'), 1800);
+    }
+
+    function tirar() {
+      if (ganado) {
+        return actualizarMensaje('Ya obtuviste el premio. Reinicia para jugar otra vez.', 'success');
+      }
+      if (fichas < costo) {
+        return actualizarMensaje('No te quedan fichas. Fin del juego.', 'warning');
+      }
+      fichas -= costo;
+      intentos += 1;
+      actualizarPantalla();
+
+      const exito = Math.random() < probabilidad;
+      if (exito) {
+        ganado = true;
+        mostrarPremio();
+        actualizarMensaje(`¡Felicidades! Ganaste en el intento ${intentos}. Recuerda: el éxito siguió siendo 5% en cada tiro.`, 'success');
+      } else if (fichas < costo) {
+        actualizarMensaje('Agotaste las fichas sin premio. Esto muestra que no está garantizado aunque intentes muchas veces.', 'error');
+      } else {
+        const probSinExito = Math.pow(1 - probabilidad, intentos);
+        const probAlMenosUno = (1 - probSinExito) * 100;
+        actualizarMensaje(`Intento ${intentos}: No salió el premio. Probabilidad de haber ganado al menos una vez hasta ahora: ${probAlMenosUno.toFixed(1)}%.`, 'normal');
+      }
+    }
+
+    function reiniciar() {
+      fichas = initialFichas;
+      intentos = 0;
+      ganado = false;
+      actualizarPantalla();
+      actualizarMensaje('Pulsa "Intentar tirar" para ver si consigues el premio.');
+    }
+
+    tryBtn.addEventListener('click', tirar);
+    resetBtn.addEventListener('click', reiniciar);
+    actualizarPantalla();
+  </script>
+</body>
+</html>
