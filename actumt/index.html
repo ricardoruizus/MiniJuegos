@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini juegos de mitos - Menú</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+    main { max-width: 920px; width: 100%; text-align: center; }
+    h1 { margin-bottom: 0.25rem; color: #38bdf8; }
+    p { color: #cbd5e1; }
+    .menu { display: grid; gap: 16px; margin-top: 32px; }
+    .card { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(100, 116, 139, 0.4); border-radius: 18px; padding: 20px; text-align: left; transition: transform 0.2s ease, border-color 0.2s ease; }
+    .card:hover { transform: translateY(-2px); border-color: #38bdf8; }
+    .card a { display: inline-block; margin-top: 12px; color: #38bdf8; text-decoration: none; font-weight: 700; }
+    .note { margin-top: 36px; color: #94a3b8; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Menú de Juegos - Mitos de Probabilidad</h1>
+    <p>Selecciona un juego que muestra por qué el mito no se cumple realmente. Cada juego usa simulación y probabilidad independiente.</p>
+    <div class="menu">
+      <div class="card">
+        <h2>Juego 5: ¿La suerte mejora con más intentos?</h2>
+        <p>Cada intento sigue teniendo 5% de probabilidad. El mito dice que si intentas muchas veces, seguro lo logras.</p>
+        <a href="game5.html">Ir a Juego 5</a>
+      </div>
+      <div class="card">
+        <h2>Juego 6: Loot box simulator</h2>
+        <p>Simulador de cajas tipo gacha. Comprar muchas cajas no asegura una carta legendaria.</p>
+        <a href="game6.html">Ir a Juego 6</a>
+      </div>
+    </div>
+    <p class="note">Sube estos archivos a GitHub y configura Pages para publicar la web. Cada página es independiente y tiene su propia hoja de estilo.</p>
+  </main>
+</body>
+</html>

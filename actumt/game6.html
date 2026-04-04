@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Juego 6 - Loot box simulator</title>
+  <link rel="stylesheet" href="game6.module.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="header">
+      <div>
+        <p class="subtitle">Juego 6</p>
+        <h1>Loot box simulator</h1>
+      </div>
+      <a class="back-link" href="index.html">← Volver al menú</a>
+    </header>
+
+    <section class="panel info-panel">
+      <h2>Mito</h2>
+      <p>“Si compras muchas cajas, seguro obtendrás el objeto legendario.”</p>
+      <h2>Cómo funciona</h2>
+      <ul>
+        <li>El jugador puede comprar 1 mazo (10 cartas) o 10 mazos (100 cartas).</li>
+        <li>Un mazo cuesta 10 fichas y 10 mazos cuestan 90 fichas.</li>
+        <li>La carta legendaria tiene 5% de probabilidad en cada carta.</li>
+      </ul>
+      <p class="explain">Las cartas se generan de forma independiente. Comprar más cajas aumenta las oportunidades, pero no garantiza un legendario.</p>
+    </section>
+
+    <section class="panel game-panel">
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="label">Fichas</span>
+          <strong id="fichas">1000</strong>
+        </div>
+        <div class="stat-card">
+          <span class="label">Mazos comprados</span>
+          <strong id="mazos">0</strong>
+        </div>
+        <div class="stat-card">
+          <span class="label">Cartas abiertas</span>
+          <strong id="cartas">0</strong>
+        </div>
+        <div class="stat-card">
+          <span class="label">Legendarios</span>
+          <strong id="legendarios">0</strong>
+        </div>
+      </div>
+
+      <div class="progress-shell">
+        <div class="progress-caption">Progreso del paquete actual</div>
+        <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+        <div class="progress-label" id="progressLabel">0 / 0 cartas abiertas</div>
+      </div>
+
+      <div class="drop-rates">
+        <span>Común: 25%</span>
+        <span>Raro: 50%</span>
+        <span>Épico: 20%</span>
+        <span>Legendario: 5%</span>
+      </div>
+
+      <div class="actions">
+        <button id="buy1">Comprar 1 mazo (10 fichas)</button>
+        <button id="buy10">Comprar 10 mazos (90 fichas)</button>
+        <button id="resetBtn" class="secondary">Reiniciar simulador</button>
+      </div>
+
+      <div id="message" class="message">Empieza comprando cajas para abrir cartas y buscar el legendario.</div>
+    </section>
+
+    <section class="panel tip-panel">
+      <h2>Demostración</h2>
+      <p>La probabilidad de obtener al menos un legendario tras N cartas es <strong>1 − 0.95^N</strong>. Nunca es 100% con un número finito de cartas.</p>
+      <p class="note">El juego enseña probabilidad acumulada y eventos independientes: cada carta conserva el mismo 5% de legendario.</p>
+    </section>
+  </div>
+
+  <div id="reward" class="reward hidden">
+    <div class="trophy">✨</div>
+    <p>¡Carta Legendaria encontrada!</p>
+  </div>
+
+  <script>
+    const fichasEl = document.getElementById('fichas');
+    const mazosEl = document.getElementById('mazos');
+    const cartasEl = document.getElementById('cartas');
+    const legendariosEl = document.getElementById('legendarios');
+    const progressEl = document.getElementById('progress');
+    const progressLabel = document.getElementById('progressLabel');
+    const messageEl = document.getElementById('message');
+    const buy1Btn = document.getElementById('buy1');
+    const buy10Btn = document.getElementById('buy10');
+    const resetBtn = document.getElementById('resetBtn');
+    const rewardEl = document.getElementById('reward');
+
+    const initialFichas = 1000;
+    const probLegendario = 0.05;
+    let fichas = initialFichas;
+    let mazos = 0;
+    let cartas = 0;
+    let legendarios = 0;
+    let cartasTotalesPendientes = 0;
+    let cartasAbiertasEnSesion = 0;
+
+    const rarities = [
+      { name: 'Legendario', chance: 0.05, color: '#facc15' },
+      { name: 'Épico', chance: 0.20, color: '#a78bfa' },
+      { name: 'Raro', chance: 0.50, color: '#38bdf8' },
+      { name: 'Común', chance: 0.25, color: '#94a3b8' }
+    ];
+
+    function actualizarPantalla() {
+      fichasEl.textContent = fichas;
+      mazosEl.textContent = mazos;
+      cartasEl.textContent = cartas;
+      legendariosEl.textContent = legendarios;
+      progressEl.style.width = cartasTotalesPendientes === 0 ? '0%' : `${Math.min(100, Math.round((cartasAbiertasEnSesion / cartasTotalesPendientes) * 100))}%`;
+      progressLabel.textContent = `${cartasAbiertasEnSesion} / ${cartasTotalesPendientes} cartas abiertas`;
+    }
+
+    function actualizarMensaje(text, type = 'normal') {
+      messageEl.textContent = text;
+      messageEl.className = `message ${type}`;
+    }
+
+    function mostrarPremio() {
+      rewardEl.classList.remove('hidden');
+      rewardEl.classList.add('show');
+      setTimeout(() => rewardEl.classList.remove('show'), 1800);
+    }
+
+    function abrirCartas(cantidad) {
+      let leyendasEncontradas = 0;
+      let detalles = [];
+      for (let i = 0; i < cantidad; i += 1) {
+        const rnd = Math.random();
+        let acumulado = 0;
+        for (const rare of rarities) {
+          acumulado += rare.chance;
+          if (rnd < acumulado) {
+            detalles.push(rare.name);
+            if (rare.name === 'Legendario') {
+              legendarios += 1;
+              leyendasEncontradas += 1;
+            }
+            break;
+          }
+        }
+      }
+      return leyendasEncontradas;
+    }
+
+    function comprarMazos(cantidadMazos, costo) {
+      if (fichas < costo) {
+        return actualizarMensaje('No tienes suficientes fichas para esa compra.', 'warning');
+      }
+      fichas -= costo;
+      mazos += cantidadMazos;
+      const nuevasCartas = cantidadMazos * 10;
+      cartasTotalesPendientes = nuevasCartas;
+      cartasAbiertasEnSesion = 0;
+      actualizarPantalla();
+
+      let leyendas = 0;
+      let apertura = 0;
+      const abrirSiguiente = () => {
+        if (apertura >= nuevasCartas) {
+          const probSinLegendario = Math.pow(1 - probLegendario, cartas);
+          const probAlMenosUno = ((1 - probSinLegendario) * 100).toFixed(1);
+          const msgBase = `Has abierto ${cartas} cartas. Probabilidad acumulada de al menos un legendario: ${probAlMenosUno}%`;
+          if (legendarios === 0) {
+            actualizarMensaje(`${msgBase}. No hay ningún legendario todavía, lo que demuestra que no es seguro obtenerlo.`, 'error');
+          } else {
+            actualizarMensaje(`${msgBase}. ¡Literalmente conseguiste ${legendarios} legendario(s)! Pero sigue sin ser una garantía.`, 'success');
+          }
+          cartasTotalesPendientes = 0;
+          actualizarPantalla();
+          return;
+        }
+        apertura += 1;
+        cartas += 1;
+        cartasAbiertasEnSesion += 1;
+        const leyendas = abrirCartas(1);
+        if (leyendas > 0) {
+          mostrarPremio();
+        }
+        actualizarPantalla();
+        setTimeout(abrirSiguiente, 35);
+      };
+      abrirSiguiente();
+    }
+
+    buy1Btn.addEventListener('click', () => comprarMazos(1, 10));
+    buy10Btn.addEventListener('click', () => comprarMazos(10, 90));
+    resetBtn.addEventListener('click', () => {
+      fichas = initialFichas;
+      mazos = 0;
+      cartas = 0;
+      legendarios = 0;
+      cartasTotalesPendientes = 0;
+      cartasAbiertasEnSesion = 0;
+      actualizarPantalla();
+      actualizarMensaje('Empieza comprando cajas para abrir cartas y buscar el legendario.');
+    });
+
+    actualizarPantalla();
+  </script>
+</body>
+</html>
