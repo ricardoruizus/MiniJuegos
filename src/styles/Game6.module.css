@@ -1,0 +1,458 @@
+/* ============================
+   Game 6 — Loot Box Simulator
+   Dark Casino Minimalist
+   ============================ */
+
+.page {
+  min-height: 100vh;
+  background: #0d0d0d;
+  padding: 1.5rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.backBtn {
+  color: #888;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.backBtn:hover { color: #c9a84c; }
+
+.mythBadge {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #c9a84c;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.container { max-width: 1000px; margin: 0 auto; }
+
+/* Title */
+.titleBlock { text-align: center; margin-bottom: 2.5rem; }
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #f0f0f0;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.mythCard {
+  display: inline-block;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-left: 3px solid #c9a84c;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  max-width: 540px;
+  text-align: left;
+}
+
+.mythLabel {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #c9a84c;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.mythText { color: #ccc; font-size: 0.95rem; line-height: 1.6; margin: 0; }
+.mythText em { color: #e05252; font-style: normal; font-weight: 700; }
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 680px) {
+  .layout { grid-template-columns: 1fr; }
+  .title { font-size: 1.7rem; }
+}
+
+/* ============================
+   LEFT PANEL
+   ============================ */
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Stats */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+}
+
+.statCard {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 0.85rem 0.4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: border-color 0.3s;
+}
+
+.statGold { border-color: #c9a84c55 !important; }
+
+.statNum {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f0f0f0;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.statGold .statNum { color: #c9a84c; }
+
+.statLbl {
+  font-size: 0.62rem;
+  color: #555;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Progress */
+.progressBlock {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.6rem;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 10px;
+  background: #111;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #a78bfa, #c9a84c);
+  border-radius: 999px;
+  transition: width 0.1s ease;
+}
+
+/* Cartas */
+.cartasBlock {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.cartasLabel {
+  font-size: 0.72rem;
+  color: #555;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.cartasGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  min-height: 36px;
+}
+
+.cartasEmpty { color: #333; font-size: 1.2rem; }
+
+.carta {
+  width: 32px;
+  height: 42px;
+  border-radius: 6px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  animation: cardPop 0.2s ease;
+}
+
+@keyframes cardPop {
+  from { transform: scale(0.6) rotate(-5deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Message */
+.message {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  font-size: 0.85rem;
+  color: #aaa;
+  line-height: 1.7;
+  min-height: 58px;
+}
+
+.msg_success { border-color: #4caf7d44; color: #4caf7d; background: #0f1a0f; }
+.msg_error   { border-color: #e0525244; color: #e05252; background: #1a0808; }
+.msg_warning { border-color: #c9a84c44; color: #c9a84c; background: #1e1a00; }
+
+/* Buttons */
+.actionRow {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btnPrimary {
+  flex: 1;
+  background: #c9a84c;
+  color: #0d0d0d;
+  padding: 0.85rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btnPrimary:hover:not(:disabled) { background: #dfc06a; }
+.btnPrimary:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.btnSecondary {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #666;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btnSecondary:hover { border-color: #444; color: #999; }
+
+/* ============================
+   RIGHT PANEL
+   ============================ */
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.dropCard, .acumCard, .noteCard, .costTable {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.infoTitle {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #c9a84c;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+
+/* Drop rates */
+.dropRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.82rem;
+}
+
+.dropEmoji { width: 20px; text-align: center; }
+
+.dropName {
+  width: 90px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.dropBarTrack {
+  flex: 1;
+  height: 7px;
+  background: #111;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dropBarFill {
+  height: 100%;
+  border-radius: 999px;
+  opacity: 0.8;
+  transition: width 0.5s ease;
+}
+
+.dropPct {
+  width: 30px;
+  text-align: right;
+  color: #555;
+  font-size: 0.75rem;
+}
+
+/* Accumulated */
+.acumDisplay {
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.acumNum {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #c9a84c;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.acumSub {
+  font-size: 0.75rem;
+  color: #555;
+  letter-spacing: 0.04em;
+}
+
+.acumTrack {
+  width: 100%;
+  height: 10px;
+  background: #111;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.acumFill {
+  height: 100%;
+  background: linear-gradient(90deg, #c9a84c, #dfc06a);
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+.acumFormula {
+  font-size: 0.75rem;
+  color: #444;
+  font-family: monospace;
+  text-align: center;
+  margin: 0;
+}
+
+.noteCard p { color: #666; font-size: 0.85rem; line-height: 1.7; margin: 0; }
+.noteCard strong { color: #aaa; }
+
+/* Cost table */
+.costRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #222;
+  font-size: 0.85rem;
+  color: #777;
+}
+.costRow:last-child { border-bottom: none; }
+.costVal { color: #c9a84c; font-weight: 700; }
+
+/* ============================
+   CONCLUSION
+   ============================ */
+.conclusion {
+  margin-top: 2.5rem;
+  background: linear-gradient(135deg, #0f1a0f, #1a1a1a);
+  border: 1px solid #4caf7d44;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.conclusionIcon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+.conclusion h3 {
+  font-size: 1.4rem;
+  color: #4caf7d;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.conclusion p {
+  color: #aaa;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 620px;
+  margin: 0 auto 0.75rem;
+}
+
+.conclusion strong { color: #f0f0f0; }
+.conclusion em { color: #c9a84c; font-style: normal; font-weight: 700; }
+
+.conceptTag { font-size: 0.8rem !important; color: #555 !important; letter-spacing: 0.06em; }
+.conceptTag strong { color: #888 !important; }
+
+/* Premio overlay */
+.premioOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.premioBox {
+  background: rgba(13, 13, 13, 0.92);
+  border: 1px solid #c9a84c55;
+  border-radius: 20px;
+  padding: 2rem 3rem;
+  text-align: center;
+  animation: popIn 0.4s ease;
+  backdrop-filter: blur(12px);
+}
+
+.premioTrophy { font-size: 4rem; display: block; margin-bottom: 0.5rem; }
+
+.premioBox p { color: #c9a84c; font-size: 1.1rem; font-weight: 700; margin: 0; }
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}

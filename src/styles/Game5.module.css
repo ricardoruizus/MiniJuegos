@@ -1,0 +1,458 @@
+/* ============================
+   Game 5 — ¿La suerte mejora?
+   Dark Casino Minimalist
+   ============================ */
+
+.page {
+  min-height: 100vh;
+  background: #0d0d0d;
+  padding: 1.5rem;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.backBtn {
+  color: #888;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.backBtn:hover { color: #c9a84c; }
+
+.mythBadge {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #c9a84c;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Title */
+.titleBlock {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #f0f0f0;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.mythCard {
+  display: inline-block;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-left: 3px solid #c9a84c;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  max-width: 520px;
+  text-align: left;
+}
+
+.mythLabel {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #c9a84c;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.mythText {
+  color: #ccc;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.mythText em {
+  color: #e05252;
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 680px) {
+  .layout { grid-template-columns: 1fr; }
+  .title { font-size: 1.7rem; }
+}
+
+/* ============================
+   LEFT PANEL
+   ============================ */
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Tómbola */
+.tombola {
+  display: flex;
+  justify-content: center;
+}
+
+.tombolaInner {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #1e1a00, #111);
+  border: 3px solid #c9a84c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 0 30px #c9a84c22;
+  transition: all 0.3s;
+}
+
+.tombolaWin {
+  border-color: #4caf7d;
+  box-shadow: 0 0 40px #4caf7d44;
+  animation: winPulse 0.6s ease;
+}
+
+@keyframes winPulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.tombolaEmoji { font-size: 3rem; }
+
+.tombolaLabel {
+  font-size: 0.65rem;
+  color: #666;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Stats grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.statCard {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 0.9rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.statAccent { border-color: #c9a84c33; }
+
+.statNum {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #f0f0f0;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.statAccent .statNum { color: #c9a84c; }
+
+.statLbl {
+  font-size: 0.68rem;
+  color: #555;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Progress */
+.progressBlock {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 10px;
+  background: #111;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #c9a84c, #dfc06a);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+/* Message */
+.message {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  font-size: 0.88rem;
+  color: #aaa;
+  line-height: 1.7;
+  min-height: 60px;
+  transition: all 0.3s;
+}
+
+.msg_success { border-color: #4caf7d44; color: #4caf7d; background: #0f1a0f; }
+.msg_error   { border-color: #e0525244; color: #e05252; background: #1a0808; }
+.msg_warning { border-color: #c9a84c44; color: #c9a84c; background: #1e1a00; }
+
+/* Buttons */
+.actionRow {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btnPrimary {
+  flex: 1;
+  background: #c9a84c;
+  color: #0d0d0d;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btnPrimary:hover:not(:disabled) { background: #dfc06a; }
+.btnPrimary:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.btnSecondary {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  color: #888;
+  padding: 0.85rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btnSecondary:hover { border-color: #444; color: #bbb; }
+
+/* ============================
+   RIGHT PANEL
+   ============================ */
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.infoCard, .probCard, .noteCard {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.infoTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #c9a84c;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+
+.infoList {
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: #888;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.infoList strong { color: #f0f0f0; }
+
+/* Probability table */
+.probFormula {
+  font-size: 1rem;
+  color: #c9a84c;
+  font-family: monospace;
+  margin: 0 0 1rem;
+  letter-spacing: 0.05em;
+}
+
+.probTable {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.probRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: #555;
+  transition: color 0.3s;
+}
+
+.probRowActive { color: #aaa; }
+
+.probRow span:first-child {
+  width: 72px;
+  flex-shrink: 0;
+}
+
+.probBarTrack {
+  flex: 1;
+  height: 6px;
+  background: #111;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.probBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #c9a84c, #dfc06a);
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+.probVal {
+  width: 44px;
+  text-align: right;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+}
+
+.noteCard p {
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.noteCard strong { color: #aaa; }
+
+/* ============================
+   CONCLUSION
+   ============================ */
+.conclusion {
+  margin-top: 2.5rem;
+  background: linear-gradient(135deg, #0f1a0f, #1a1a1a);
+  border: 1px solid #4caf7d44;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.conclusionIcon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+.conclusion h3 {
+  font-size: 1.4rem;
+  color: #4caf7d;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.conclusion p {
+  color: #aaa;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto 0.75rem;
+}
+
+.conclusion strong { color: #f0f0f0; }
+
+.conceptTag {
+  font-size: 0.8rem !important;
+  color: #555 !important;
+  letter-spacing: 0.06em;
+}
+
+.conceptTag strong { color: #888 !important; }
+
+/* Premio overlay */
+.premioOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.premioBox {
+  background: rgba(13, 13, 13, 0.92);
+  border: 1px solid #4caf7d55;
+  border-radius: 20px;
+  padding: 2rem 3rem;
+  text-align: center;
+  animation: popIn 0.5s ease;
+  backdrop-filter: blur(12px);
+}
+
+.premioTrophy { font-size: 4rem; display: block; margin-bottom: 0.5rem; }
+
+.premioBox p {
+  color: #4caf7d;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
